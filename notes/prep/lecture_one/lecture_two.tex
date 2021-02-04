@@ -68,7 +68,7 @@ Name: & Eli Andrew
         \item Image data preprocessing: it is important to both (1) center your data by subtracting the mean image from each
         image, and (2) scale each feature so that it ranges from [-1, 1]
     \end{itemize}
-    \item \textbf{Loss functions and Other Classifiers:}
+    \item \textbf{Loss functions:}
     \begin{itemize}
       \item \textbf{Multiclass SVM}:
       \begin{itemize}
@@ -96,9 +96,57 @@ Name: & Eli Andrew
         \end{gather*}
       \end{itemize}
     \end{itemize}
-    \item \textbf{Softmax Classifier}:
+    \item \textbf{Softmax loss}:
     \begin{itemize}
       \item Generalization of the logistic regression classifier to multi-class
+      \item Output scores are now treated as \textbf{unnormalized log probabilities fo each class}
+      \item Hinge loss is then replaced with cross-entropy loss:
+      \begin{gather*}
+        L_i = -\log{\frac{e^{f_{y_i}}}{\sum_j e^{f_{j}}}}
+      \end{gather*}
+      \item Cross-entropy between a true distribution $p$ and an estimated distribution $q$ is defined as:
+      \begin{gather*}
+        H(p,q) = -\sum\limits_x p(x)\log{q(x)}
+      \end{gather*}
+      \item Softmax classifier is minimizing the cross-entropy between the estimated class probabilities
+      ($q = \frac{e^{f_{y_i}}}{\sum_je^{f_j}}$) and the ``true'' distribution, which is the distribution where
+      all probability mass is on the correct class (i.e. vector with one at the correct class)
+      \item KL divergence between a true distribution $p$ and an estimated distribution $q$ is defined as:
+      \begin{gather*}
+        D_{KL}(p, q) = \sum\limits_x p(x)\log{\frac{p(x)}{q(x)}} = \sum\limits_x p(x)\log{p(x)} - p(x)\log{q(x)}
+      \end{gather*}
+      \item Cross-entropy can also be written in terms of entropy and KL-divergence as
+      \begin{gather*}
+        H(p,q) = H(p) + D_{KL}(p || q)
+      \end{gather*}
+      \item The entropy of $p$ ($H(p)$) is 0 so this is equivalent to minimizing the KL divergence between the two distributions (distance)
+      \item In other words, cross-entropy objective wants the predicted distribution to have all its mass over the correct answer
+      \item \textbf{Probabilistic Interpretation}:
+      \begin{itemize}
+        \item $P(y_i | x_i; W) = \frac{e^{f_{y_i}}}{\sum_j e^{f_j}}$ can be interpreted as the (normalized) probability assigned to the correct
+        label $y_i$ given the image $x_i$ and parameterized by $W$
+        \item This can be interpreted as performing Maximum-Likelihood Estimation
+      \end{itemize}
+      \item \textbf{Numerical Stability in Softmax Code}:
+      \begin{itemize}
+        \item Intermediate terms $e^{f_{y_i}}$ and $\sum_j e^{f_j}$ can blow up because of exponentials
+        \item Normalize by multiplying top and bottom by constant $C$ and pushing into the sum to get:
+        \begin{gather*}
+          \frac{e^{f_{y_i}}}{\sum_j e^{f_j}} 
+          = \frac{Ce^{f_{y_i}}}{C\sum_j e^{f_j}} 
+          = \frac{e^{f_{y_i}+\log{C}}}{\sum_j e^{f_j + \log{C}}}
+        \end{gather*}
+        \item Common choice for $C$ is to set $\log{C} = -max_jf_j$ which shifts values inside vector f
+        such that highest value is zero
+      \end{itemize}
+      \item Softmax outputs should be thought of as confidences rather than probabilities because they are subject
+      to the regularization parameter $\lambda$
+      \item If you have a high $\lambda$ then output probabilities will be more uniform while if you have low $\lambda$
+      the output probabilities will be more peaky
+      \item Therefore, output values of softmax and SVM are somewhat similar in their interpretations: ordering of scores is
+      interpretable but the absolute numbers and differences between them are not
+      \item SVM and Softmax are very comparable but the main difference lies in the fact that an SVM stops caring about loss once
+      it gets above a certain margin, while Softmax is never completely happy with the loss and has no notion of a margin
     \end{itemize}
   \end{itemize}
 
