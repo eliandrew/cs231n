@@ -1,0 +1,51 @@
+\documentclass[12pt]{article}
+\usepackage{fullpage,enumitem,amsmath,amssymb,graphicx}
+
+\newcommand{\ub}{\boldsymbol{u}}
+\newcommand{\vb}{\boldsymbol{v}}
+
+\begin{document}
+
+\begin{center}
+{\Large CNNs - Stanford CS231N}
+
+\begin{tabular}{rl}
+Name: & Eli Andrew
+\end{tabular}
+\end{center}
+
+  \begin{itemize}
+    \item \textbf{Spatial Arrangement}
+    \begin{itemize}
+        \item \textbf{Depth}
+        \begin{itemize}
+            \item Depth of output volume is a hyperparameter
+            \item It corresponds to the number of filters we use (each one looking for something different)
+            \item \textbf{Depth Column:} set of neurons looking at the same region of input
+        \end{itemize}
+        \item \textbf{Stride}
+        \begin{itemize}
+            \item Stride is how many pixels you move each filter after each convolution with the input
+            \item Larger stride will produce smaller output volumes
+        \end{itemize}
+        \item \textbf{Zero Padding}
+        \begin{itemize}
+            \item Hyperparameter for padding input volume with zeros
+            \item Allows for controlling the size of the output volume
+        \end{itemize}
+        \item Output volume of a convolution is given as:
+        \begin{gather*}
+            \frac{W - F + 2P}{S} + 1
+        \end{gather*}
+        \item Where $W$ is the input volume size, $F$ is the filter size, $P$ is zero padding size, and $S$ is stride
+        \item Example with input size $7\times7$ filter size $3\times3$, stride 1 and pad 0 giving an output size of $5\times5\times3$:
+        \begin{gather*}
+            W = 7, F = 3, S = 1, P = 0 \\ \\
+            \frac{W - F + 2P}{S} + 1 = \frac{7 - 3 + 0}{1} + 1 = 5
+        \end{gather*}
+        \item Setting zero-padding to: $P = \frac{F-1}{2}$ when $S = 1$ keeps input and output as the same dimension
+    \end{itemize}
+  \end{itemize}
+
+
+\end{document}
