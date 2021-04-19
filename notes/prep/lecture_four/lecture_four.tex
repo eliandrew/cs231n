@@ -1,0 +1,66 @@
+\documentclass[12pt]{article}
+\usepackage{fullpage,enumitem,amsmath,amssymb,graphicx}
+
+\newcommand{\ub}{\boldsymbol{u}}
+\newcommand{\vb}{\boldsymbol{v}}
+
+\begin{document}
+
+\begin{center}
+{\Large Neural Networks Part 2 Stanford CS231N}
+
+\begin{tabular}{rl}
+Name: & Eli Andrew
+\end{tabular}
+\end{center}
+
+  \begin{itemize}
+    \item \textbf{Activation Functions}
+    \begin{itemize}
+      \item \textbf{Sigmoid}
+      \begin{itemize}
+        \item $\sigma(x) = \frac{1}{1 + e^{-x}}$
+        \item Saturated neurons (output close to 0 or 1) ``kill'' the gradients.
+        \item Sigmoid outputs are not zero-centered. If input to neuron is always all positive
+        then gradient is either all positive or all negative. This leads to bad gradient updates.
+        \item \textbf{This is why you want zero-mean data}
+        \item $e^{-x}$ is expensive to compute (compared to other options)
+      \end{itemize}
+      \item \textbf{Tanh}
+      \begin{itemize}
+        \item Attempts to solve the issue of being zero-centered.
+        \item Still kills the gradients when saturated.
+      \end{itemize}
+      \item \textbf{ReLU}
+      \begin{itemize}
+        \item Computes $f(x) = max(0, x)$
+        \item Neuron does not saturate in positive region (doesn't kill gradients).
+        \item Very computationally efficient
+        \item Converges must faster than other options.
+        \item Does not have zero-centered data
+        \item Kills gradient when less than 0.
+        \item Dead ReLU problem happens when neuron gets knocked off ``data-manifold'' and then
+        can no longer update.
+        \item Initialize the ReLU units with slightly positive bias (0.01) to try and avoid
+        the dead ReLU issue.
+      \end{itemize}
+      \item \textbf{Leaky-ReLU}
+      \begin{itemize}
+        \item Computes $f(x) = max(0.01x, x)$
+        \item Does not die like regular ReLU
+      \end{itemize}
+    \end{itemize}
+    \item \textbf{Data Pre-processing}
+    \begin{itemize}
+      \item Zero-center data (subtract mean from every feature)
+      \item Normalize data (not as common for images)
+    \end{itemize}
+    \item \textbf{Weight Initialization}
+    \begin{itemize}
+      \item Zero weight initialization doesn't break symmetry so all neurons update the same.
+      
+    \end{itemize}
+  \end{itemize}
+
+
+\end{document}
